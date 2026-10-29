@@ -1,0 +1,46 @@
+@startuml AuraGrid_Despliegue
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName "Arial"
+skinparam shadowing false
+skinparam roundCorner 8
+
+skinparam node {
+    BackgroundColor #F8FAFC
+    BorderColor #475569
+    FontColor #0F172A
+    FontStyle bold
+}
+
+skinparam component {
+    BackgroundColor #FFFFFF
+    BorderColor #1E293B
+    FontColor #0F172A
+}
+
+skinparam arrow {
+    Color #2563EB
+    FontColor #334155
+    FontSize 10
+}
+
+node "Equipo Cliente Aplicación" #F0F9FF {
+    component [Script Cliente / Interfaz REST] as Client #E0F2FE
+}
+
+node "Nodo Borde A (Localhost:8001)" #F8FAFC {
+    component [Instancia Núcleo AuraGrid A] as NodeA #DBEAFE
+}
+
+node "Nodo Borde B (Localhost:8002)" #F8FAFC {
+    component [Instancia Núcleo AuraGrid B] as NodeB #FEF3C7
+}
+
+node "Nodo Borde C (Localhost:8003)" #F8FAFC {
+    component [Instancia Núcleo AuraGrid C] as NodeC #D1FAE5
+}
+
+Client -[#0284C7]-> NodeA : TCP/IP (Puerto 8001)
+NodeA <-[#2563EB]-> NodeB : Sockets Asíncronos
+NodeA <-[#2563EB]-> NodeC : Sockets Asíncronos
+NodeB <-[#D97706]-> NodeC : Sockets Asíncronos
+@enduml

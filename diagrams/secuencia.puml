@@ -1,0 +1,55 @@
+@startuml AuraGrid_Secuencia
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName "Arial"
+skinparam shadowing false
+skinparam roundCorner 6
+
+' Estilos de actores y participantes
+skinparam actor {
+    BackgroundColor #E0F2FE
+    BorderColor #0284C7
+    FontColor #0F172A
+}
+
+skinparam participant {
+    BackgroundColor #F1F5F9
+    BorderColor #334155
+    FontColor #0F172A
+    FontStyle bold
+}
+
+skinparam sequence {
+    LifeLineBorderColor #94A3B8
+    LifeLineBackgroundColor #F8FAFC
+    
+    ArrowColor #2563EB
+    ArrowFontColor #1E293B
+    ArrowFontSize 11
+    
+    BoxBackgroundColor #F8FAFC
+    BoxBorderColor #CBD5E1
+}
+
+actor "Cliente API" as Cliente #E0F2FE
+participant "Nodo 1 (Líder)" as N1 #DBEAFE
+participant "Pool de Hilos" as Pool #D1FAE5
+participant "Nodo 2 (Par/Peer)" as N2 #FEF3C7
+
+Cliente -> N1: **PETICIÓN_INFERENCIA** (Datos)
+activate N1 #DBEAFE
+
+N1 -> Pool: Delegar Tarea de Inferencia
+activate Pool #D1FAE5
+Pool --> N1: Resultado de Inferencia Local
+deactivate Pool
+
+N1 -> N2: **SOLICITUD_VOTO** (Datos)
+activate N2 #FEF3C7
+N2 -> N2: Evaluación Cómputo Local
+N2 --> N1: Respuesta de Voto (Resultado)
+deactivate N2
+
+N1 -> N1: Evaluar Consenso de Mayoría (>50%)
+N1 --> Cliente: **Resultado de Consenso Aprobado**
+deactivate N1
+@enduml

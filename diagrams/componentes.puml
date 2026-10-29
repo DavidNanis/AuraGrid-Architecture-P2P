@@ -1,0 +1,55 @@
+@startuml AuraGrid_Componentes
+!pragma layout smetana
+skinparam backgroundColor #FFFFFF
+skinparam componentStyle uml2
+
+' Estilos generales
+skinparam defaultFontName "Arial"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam roundCorner 8
+
+' Estilos de paquetes
+skinparam package {
+    BackgroundColor #F8FAFC
+    BorderColor #64748B
+    FontColor #0F172A
+    FontStyle bold
+}
+
+' Estilos de componentes
+skinparam component {
+    BackgroundColor #FFFFFF
+    BorderColor #1E293B
+    FontColor #0F172A
+}
+
+' Estilos de base de datos
+skinparam database {
+    BackgroundColor #F1F5F9
+    BorderColor #334155
+    FontColor #0F172A
+}
+
+' Estilos de flechas
+skinparam arrow {
+    Color #2563EB
+    FontColor #1E293B
+    FontSize 10
+}
+
+package "Nodo del Sistema AuraGrid" {
+    [Cliente API / Interfaz Gateway] as Gateway #E0F2FE
+    [Gestor de Consenso] as Consensus #DBEAFE
+    [Motor de Inferencia de IA] as InferenceEngine #D1FAE5
+    [Capa de Comunicación P2P] as P2P #FEF3C7
+}
+
+database "Estado del Libro Local" as DB
+
+Gateway -[#0284C7]-> Consensus : Solicitar Petición de Datos
+Consensus -[#2563EB]-> InferenceEngine : Procesar Modelo de IA (Hilo)
+Consensus -[#D97706]-> P2P : Difundir Solicitud de Voto
+P2P .[#D97706].> [Nodos Pares Externos] : Protocolo TCP Socket JSON
+InferenceEngine -[#059669]-> DB : Leer/Escribir Resultado de Consenso
+@enduml
